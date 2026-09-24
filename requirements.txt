@@ -6,3 +6,4 @@ urllib3==1.25.8
 PyYAML==5.3
 cryptography==3.2
 Jinja2==2.10
+pydantic-settings==2.10.1
