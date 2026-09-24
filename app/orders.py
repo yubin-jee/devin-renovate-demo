@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 
 
 class Order(BaseModel):
@@ -6,15 +6,16 @@ class Order(BaseModel):
     quantity: int
     region: str = "eu-central-1"
 
-    @validator("quantity")
+    @field_validator("quantity")
+    @classmethod
     def quantity_positive(cls, v):
         if v <= 0:
             raise ValueError("quantity must be positive")
         return v
 
     def to_payload(self) -> dict:
-        return self.dict()
+        return self.model_dump()
 
 
 def parse_order(raw: str) -> Order:
-    return Order.parse_raw(raw)
+    return Order.model_validate_json(raw)
